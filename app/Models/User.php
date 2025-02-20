@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,7 +22,51 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    const ROLE_ADMIN = 'ADMIN';
+    const ROLE_MEDICO = 'MEDICO';
+    const ROLE_PACIENTE = 'PACIENTE';
+
+    const ROLES = [
+        self::ROLE_ADMIN => 'Admin',
+        self::ROLE_MEDICO => 'Medico',
+        self::ROLE_PACIENTE => 'Paciente',
+    ];
+
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isMedico()
+    {
+        return $this->role === self::ROLE_MEDICO;
+    }
+
+    public function isPaciente()
+    {
+        return $this->role === self::ROLE_PACIENTE;
+    }
+
+    public function canUserAccessPanel($role): bool
+    {
+        return strtolower($this->role) === strtolower($role);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return strtolower($this->role) === strtolower('ADMIN');;
+        } else if ($panel->getId() === 'medico') {
+            return strtolower($this->role) === strtolower('MEDICO');;
+        } else if ($panel->getId() === 'paciente') {
+            return strtolower($this->role) === strtolower('PACIENTE');
+        }
+
+        return true;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +90,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
 }

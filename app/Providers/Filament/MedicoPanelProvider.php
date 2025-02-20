@@ -26,7 +26,7 @@ class MedicoPanelProvider extends PanelProvider
         return $panel
             ->id('medico')
             ->path('medico')
-            ->login()
+            ->login(CustomLoginPage::class)
             ->colors([
                 'primary' => ("#4F3A3D"),
             ])

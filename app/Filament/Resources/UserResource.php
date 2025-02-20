@@ -6,12 +6,12 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,23 +21,33 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $label = 'Usuários';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                 TextInput::make('name')
+                 ->label('Nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
+                ->label('Palavra-Passe')
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Select::make('role')
+                ->label('Acesso')
+                    ->required()
+                    ->options([
+                        'PACIENTE'=> 'PACIENTE',
+                        'MEDICO'=> 'MÉDICO',
+                        'ADMIN' => 'ADMIN',
+                    ])
+                    ->default('CLIENTE'),
             ]);
     }
 
@@ -45,17 +55,38 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+                TextColumn::make('name')
+                ->label('Nome')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('role')
+                ->label('Acesso')
+                ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color(function (string $state): string {
+                        return match ($state) {
+                            'ADMIN' => 'danger',
+                            'MEDICO' => 'info',
+                            'PACIENTE' => 'success',
+                        };
+                    }),
+                TextColumn::make('created_at')
+                ->label('Data de Criação')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                ->label('Data de Actualização')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -64,12 +95,14 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                EditAction::make()
-                    ->label('Editar')
-                    ->color('primary'),
-                DeleteAction::make()
-                    ->label('Eliminar')
-                    ->color('danger'),
+                Tables\Actions\EditAction::make()
+                ->label('Editar')
+                ->color('warning')
+                ->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                ->label('Eliminar')
+                ->color('danger')
+                ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

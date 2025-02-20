@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Login\CustomLoginPage;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +27,7 @@ class PacientePanelProvider extends PanelProvider
             ->id('paciente')
             ->path('paciente')
             ->login()
-            ->registration()  
+            ->registration(CustomLoginPage::class)  
             ->colors([
                 'primary' => ("#4F3A3D"),
             ])
