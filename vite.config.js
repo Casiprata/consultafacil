@@ -8,7 +8,8 @@ export default defineConfig({
                 'resources/css/app.css', 
                 'resources/js/app.js',
                 'resources/css/filament/admin/theme.css',
-                'resources/css/filament/paciente/theme.css'
+                'resources/css/filament/paciente/theme.css',
+                'resources/css/filament/medico/theme.css',
             ],
             refresh: true,
         }),
