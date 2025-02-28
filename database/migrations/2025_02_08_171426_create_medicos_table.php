@@ -16,14 +16,14 @@ return new class extends Migration
         Schema::create('medicos', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Especialidade::class)->constrained()->onDelete('cascade');
-            $table->string('nome');
-            $table->date('data_nascimento');
-            $table->string('nacionalidade');
-            $table->integer('numero_ordem')->unique();
-            $table->string('telefone')->unique();
-            $table->string('bi')->unique();
-            $table->string('copia_bi')->unique()->nullable();
+            $table->foreignIdFor(Especialidade::class)->nullable()->constrained()->nullOnDelete();
+            $table->string('nome')->nullable();
+            $table->date('data_nascimento')->nullable();
+            $table->string('nacionalidade')->nullable();
+            $table->integer('numero_ordem')->unique()->nullable();
+            $table->string('telefone')->unique()->nullable();
+            $table->string('bi')->unique()->nullable();
+            $table->string('copia_bi')->nullable();
             $table->timestamps();
         });
     }

@@ -18,9 +18,13 @@ class Medico extends Model
         'copia_bi',
     ];
 
+    protected $attributes = [
+        'especialidade_id' => null, // Valor padrão
+    ];
+
     public function especialidade()
     {
-        return $this->belongsTo(Especialidade::class, 'especialidade_id');
+        return $this->belongsTo(Especialidade::class);
     }
 
     public function horarioTrabalho()

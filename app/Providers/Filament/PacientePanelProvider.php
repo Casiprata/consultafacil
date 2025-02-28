@@ -26,8 +26,8 @@ class PacientePanelProvider extends PanelProvider
         return $panel
             ->id('paciente')
             ->path('paciente')
-            ->login()
-            ->registration(CustomLoginPage::class)  
+            ->login(CustomLoginPage::class)
+            ->registration()
             ->colors([
                 'primary' => ("#4F3A3D"),
             ])

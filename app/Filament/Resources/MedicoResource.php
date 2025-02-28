@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -67,29 +68,37 @@ class MedicoResource extends Resource
     {
         return $table
             ->columns([
-                
-                Tables\Columns\TextColumn::make('nome')
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('especialidade.nome')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('data_nascimento')
+                TextColumn::make('nome')
+                ->sortable()
+                    ->searchable(),
+                TextColumn::make('especialidade.nome')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('data_nascimento')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nacionalidade')
+                TextColumn::make('nacionalidade')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('numero_ordem')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('telefone')
+                TextColumn::make('numero_ordem')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('bi')
+                TextColumn::make('telefone')
+                    ->searchable(),
+                TextColumn::make('bi')
+                    ->label('BI/Passaporte')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
+                    ->label('Data de Registo')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
+                    ->label('Última Atualização')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -104,6 +113,9 @@ class MedicoResource extends Resource
                 Tables\Actions\DeleteAction::make()
                 ->label('Eliminar')
                     ->color('danger'),
+                Tables\Actions\ViewAction::make()
+                    ->label('Ver')
+                    ->color('info'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

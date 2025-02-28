@@ -15,13 +15,13 @@ return new class extends Migration
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->string('nome');
-            $table->date('data_nascimento');
-            $table->string('nacionalidade');
-            $table->string('provincia');
-            $table->string('municipio');
-            $table->string('morada');
-            $table->string('telefone')->unique();
+            $table->string('nome')->nullable();
+            $table->date('data_nascimento')->nullable();
+            $table->string('nacionalidade')->nullable();
+            $table->string('provincia')->nullable();
+            $table->string('municipio')->nullable();
+            $table->string('morada')->nullable();
+            $table->string('telefone')->unique()->nullable();
             $table->timestamps();
         });
     }

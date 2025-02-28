@@ -25,6 +25,10 @@ class User extends Authenticatable
         'role',
     ];
 
+    protected $attributes = [
+        'role' => 'PACIENTE',
+    ];
+
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_MEDICO = 'MEDICO';
     const ROLE_PACIENTE = 'PACIENTE';
@@ -91,4 +95,13 @@ class User extends Authenticatable
         ];
     }
 
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class, 'user_id');
+    }
+
+    public function medico()
+    {
+        return $this->hasOne(Medico::class, 'user_id');
+    }
 }

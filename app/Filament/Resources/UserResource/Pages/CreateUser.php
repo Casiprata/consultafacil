@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Models\Medico;
+use App\Models\Paciente;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
