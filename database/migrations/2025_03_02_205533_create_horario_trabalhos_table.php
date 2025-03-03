@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('horario_trabalhos', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Medico::class)->constrained()->onDelete('cascade');
-            $table->enum('dia_semana', ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'])->nullable();
+            $table->date('dia');
             $table->time('hora_inicio');
             $table->time('hora_termino');
             $table->timestamps();

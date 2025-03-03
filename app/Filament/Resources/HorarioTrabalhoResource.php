@@ -6,12 +6,15 @@ use App\Filament\Resources\HorarioTrabalhoResource\Pages;
 use App\Filament\Resources\HorarioTrabalhoResource\RelationManagers;
 use App\Models\HorarioTrabalho;
 use App\Models\Medico;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,24 +35,42 @@ class HorarioTrabalhoResource extends Resource
                     ->options(Medico::all()->pluck('nome', 'id'))
                     ->searchable()
                     ->live(),
-                Select::make('dia_semana')
-                    ->label('Dia da semana')
+                DateTimePicker::make('dia')
+                    ->label('Data')
+                    ->displayFormat('d/m/Y')
+                    ->withoutTime()
+                    ->minDate(Carbon::today())
                     ->required()
-                    ->options([
-                        'Segunda' => 'Segunda-feira',
-                        'Terça' => 'Terça-feira',
-                        'Quarta' => 'Quarta-feira',
-                        'Quinta' => 'Quinta-feira',
-                        'Sexta' => 'Sexta-feira',
-                    ]),
-                DateTimePicker::make('hora_inicio')
+                    ->helperText('Escolha um dia iguar ou posterior ao dia atual.'),
+                TimePicker::make('hora_inicio')
                     ->label('Hora de inicio')
-                    ->required()
-                    ->format('H:i'),
-            DateTimePicker::make('hora_termino')
+                    ->rules([
+                        'date_format:H:i',
+                        'after_or_equal:08:00',
+                        'before_or_equal:15:00'
+                    ])
+                    ->helperText('Escolha um horário entre 08:00 e 15:00.')
+
+                    ->validationMessages([
+                        'after_or_equal' => 'O horário deve ser a partir das 08:00.',
+                        'before_or_equal' => 'O horário deve ser no máximo até as 15:00.',
+                    ])
+                    ->withoutSeconds()
+                    ->required(),
+                TimePicker::make('hora_termino')
                     ->label('Hora de termino')
-                    ->required()
-                    ->format('H:i'),
+                    ->rules([
+                        'date_format:H:i',
+                        'after_or_equal:08:00',
+                        'before_or_equal:15:00'
+                    ])
+                    ->helperText('Escolha um horário entre 08:00 e 15:00.')
+                    ->validationMessages([
+                        'after_or_equal' => 'O horário deve ser a partir das 08:00.',
+                        'before_or_equal' => 'O horário deve ser no máximo até as 15:00.',
+                    ])
+                    ->seconds(false)
+                    ->required(),
             ]);
     }
 
@@ -57,18 +78,32 @@ class HorarioTrabalhoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('medicos.nome')
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('medicos.nome')
                 ->label('Médico')
-                    ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('dia_semana'),
-                Tables\Columns\TextColumn::make('hora_inicio'),
-                Tables\Columns\TextColumn::make('hora_termino'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('dia')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('hora_inicio')
+                ->label('Hora de inicio')
+                ->sortable()
+                    ->searchable(),
+                TextColumn::make('hora_termino')
+                ->label('Hora de termino')
+                ->sortable()
+                    ->searchable(),
+                TextColumn::make('created_at')
+                ->label('Data de Registo')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
+                ->label('Última Atualização')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

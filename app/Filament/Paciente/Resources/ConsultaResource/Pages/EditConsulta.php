@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\ConsultaResource\Pages;
+namespace App\Filament\Paciente\Resources\ConsultaResource\Pages;
 
-use App\Filament\Resources\ConsultaResource;
+use App\Filament\Paciente\Resources\ConsultaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,10 +15,5 @@ class EditConsulta extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
     }
 }

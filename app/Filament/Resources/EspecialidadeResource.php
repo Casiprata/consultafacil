@@ -6,9 +6,12 @@ use App\Filament\Resources\EspecialidadeResource\Pages;
 use App\Filament\Resources\EspecialidadeResource\RelationManagers;
 use App\Models\Especialidade;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,10 +26,13 @@ class EspecialidadeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nome')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('descricao')
+                TextInput::make('nome')
+                    ->required(),
+                TextInput::make('num_max_consultas')
+                    ->label('Número máximo de consultas')
+                    ->numeric()
+                    ->required(),
+                Textarea::make('descricao')
                     ->columnSpanFull(),
             ]);
     }
@@ -35,13 +41,25 @@ class EspecialidadeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nome')
+                TextColumn::make('id')
+                ->label('ID')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('nome')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('num_max_consultas')
+                    ->label('Número máximo de consultas')
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                ->label('Data de Registo')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
+                ->label('Data de Última Atualização')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

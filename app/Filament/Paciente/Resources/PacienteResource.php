@@ -20,7 +20,7 @@ class PacienteResource extends Resource
 {
     protected static ?string $model = Paciente::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?string $navigationLabel = 'Meus Dados';
 

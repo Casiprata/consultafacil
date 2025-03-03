@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Especialidade;
 use App\Models\Medico;
 use App\Models\Paciente;
 use Illuminate\Database\Migrations\Migration;
@@ -16,9 +17,10 @@ return new class extends Migration
         Schema::create('consultas', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Paciente::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Especialidade::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Medico::class)->constrained()->onDelete('cascade');
             $table->dateTime('data')->nullable();
-            $table->enum('estado', ['agendada', 'Cancelada', 'Concluida'])->nullable();
+            $table->enum('estado', ['agendada', 'Cancelada', 'Concluida'])->default('agendada');
             $table->text('observacoes')->nullable();
             $table->timestamps();
         });

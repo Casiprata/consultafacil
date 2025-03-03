@@ -8,7 +8,7 @@ class HorarioTrabalho extends Model
 {
     protected $table = 'horario_trabalhos';
     protected $fillable = [
-        'medico_id', 'dia_semana', 'hora_inicio', 'hora_termino'
+        'medico_id', 'dia', 'hora_inicio', 'hora_termino'
     ];
 
     public function medicos()

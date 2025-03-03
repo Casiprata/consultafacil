@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\ConsultaResource\Pages;
+namespace App\Filament\Paciente\Resources\ConsultaResource\Pages;
 
-use App\Filament\Resources\ConsultaResource;
+use App\Filament\Paciente\Resources\ConsultaResource;
+use Auth;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateConsulta extends CreateRecord
 {
     protected static string $resource = ConsultaResource::class;
+
 
     protected function getRedirectUrl(): string
     {

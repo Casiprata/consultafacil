@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\HorarioTrabalhoResource\Pages;
+namespace App\Filament\Medico\Resources\HorarioTrabalhoResource\Pages;
 
-use App\Filament\Resources\HorarioTrabalhoResource;
+use App\Filament\Medico\Resources\HorarioTrabalhoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,10 +15,5 @@ class EditHorarioTrabalho extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
     }
 }
