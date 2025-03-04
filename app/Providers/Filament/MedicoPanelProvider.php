@@ -38,8 +38,7 @@ class MedicoPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Medico/Widgets'), for: 'App\\Filament\\Medico\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Medico\Widgets\MedicoOverView::class,
             ])
             ->middleware([
                 EncryptCookies::class,

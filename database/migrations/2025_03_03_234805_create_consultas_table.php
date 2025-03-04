@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Especialidade;
+use App\Models\HorarioTrabalho;
 use App\Models\Medico;
 use App\Models\Paciente;
 use Illuminate\Database\Migrations\Migration;
@@ -18,9 +19,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Paciente::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Especialidade::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Medico::class)->constrained()->onDelete('cascade');
-            $table->dateTime('data')->nullable();
-            $table->enum('estado', ['agendada', 'Cancelada', 'Concluida'])->default('agendada');
+            $table->foreignIdFor(HorarioTrabalho::class)->constrained()->onDelete('cascade');
+            $table->enum('estado', ['Agendada', 'Cancelada', 'Realizada'])->default('Agendada');
+            $table->string('diagnostico')->nullable();
+            $table->json('prescricao')->nullable();
             $table->text('observacoes')->nullable();
             $table->timestamps();
         });

@@ -15,4 +15,5 @@ class HorarioTrabalho extends Model
     {
         return $this->belongsTo(Medico::class, 'medico_id');
     }
+
 }

@@ -31,4 +31,9 @@ class Medico extends Model
     {
         return $this->hasMany(HorarioTrabalho::class);
     }
+
+    public function consulta()
+    {
+        return $this->hasMany(Consulta::class);
+    }
 }

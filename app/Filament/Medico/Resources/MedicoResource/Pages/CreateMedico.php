@@ -14,4 +14,5 @@ class CreateMedico extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
 }

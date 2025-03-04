@@ -10,9 +10,36 @@ class Consulta extends Model
     protected $fillable = [
         'paciente_id',
         'especialidade_id',
-        'medico_id',
-        'data',
+        'horario_trabalho_id',
         'estado',
+        'diagnostico',
+        'prescricao',
         'observacoes',
     ];
+
+    protected $casts = [
+        'prescricao' => 'array',
+    ];
+
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class);
+    }
+
+    public function especialidade()
+    {
+        return $this->belongsTo(Especialidade::class);
+    }
+
+    public function horarioTrabalho()
+    {
+        return $this->belongsTo(HorarioTrabalho::class);
+    }
+
+   public function medicos()
+    {
+        return $this->belongsTo(Medico::class);
+    }
+
+
 }
