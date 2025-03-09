@@ -37,7 +37,7 @@ class MedicoPolicy
      */
     public function update(User $user, Medico $medico): bool
     {
-        return $user->isMedico();
+        return $user->isAdmin() || $user->isMedico();
     }
 
     /**
