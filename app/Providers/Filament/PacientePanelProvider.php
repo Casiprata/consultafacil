@@ -35,7 +35,7 @@ class PacientePanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Paciente/Resources'), for: 'App\\Filament\\Paciente\\Resources')
             ->discoverPages(in: app_path('Filament/Paciente/Pages'), for: 'App\\Filament\\Paciente\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Pages\DashboardPaciente::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Paciente/Widgets'), for: 'App\\Filament\\Paciente\\Widgets')
             ->widgets([
