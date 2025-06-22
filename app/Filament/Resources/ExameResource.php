@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConsultaResource\Pages;
-use App\Filament\Resources\ConsultaResource\RelationManagers;
-use App\Models\Consulta;
+use App\Filament\Resources\ExameResource\Pages;
+use App\Filament\Resources\ExameResource\RelationManagers;
+use App\Models\Exame;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ConsultaResource extends Resource
+class ExameResource extends Resource
 {
-    protected static ?string $model = Consulta::class;
+    protected static ?string $model = Exame::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
 
     public static function form(Form $form): Form
     {
@@ -26,15 +26,13 @@ class ConsultaResource extends Resource
                 Forms\Components\TextInput::make('paciente_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('data_consulta')
+                Forms\Components\TextInput::make('tipo_exame')
                     ->required(),
-                Forms\Components\TextInput::make('peso')
-                    ->numeric()
+                Forms\Components\TextInput::make('resultado')
+                    ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('adesao')
+                Forms\Components\DatePicker::make('data_exame')
                     ->required(),
-                Forms\Components\Textarea::make('efeitos_adversos')
-                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('observacoes')
                     ->columnSpanFull(),
             ]);
@@ -47,13 +45,12 @@ class ConsultaResource extends Resource
                 Tables\Columns\TextColumn::make('paciente_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('data_consulta')
+                Tables\Columns\TextColumn::make('tipo_exame'),
+                Tables\Columns\TextColumn::make('resultado')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('data_exame')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('peso')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('adesao'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -86,9 +83,9 @@ class ConsultaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListConsultas::route('/'),
-            'create' => Pages\CreateConsulta::route('/create'),
-            'edit' => Pages\EditConsulta::route('/{record}/edit'),
+            'index' => Pages\ListExames::route('/'),
+            'create' => Pages\CreateExame::route('/create'),
+            'edit' => Pages\EditExame::route('/{record}/edit'),
         ];
     }
 }

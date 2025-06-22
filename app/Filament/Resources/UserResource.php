@@ -6,12 +6,9 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,34 +17,28 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                 TextInput::make('name')
-                 ->label('Nome')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('email')
+                Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                TextInput::make('password')
-                ->label('Palavra-Passe')
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Select::make('role')
-                ->label('Acesso')
+                Forms\Components\TextInput::make('role')
                     ->required()
-                    ->options([
-                        'PACIENTE'=> 'PACIENTE',
-                        'MEDICO'=> 'MÉDICO',
-                        'ADMIN' => 'ADMIN',
-                    ])
-                    ->default('CLIENTE'),
+                    ->maxLength(255)
+                    ->default('ENFERMEIRO'),
             ]);
     }
 
@@ -55,38 +46,20 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
                     ->sortable(),
-                TextColumn::make('name')
-                ->label('Nome')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('role')
                     ->searchable(),
-                TextColumn::make('email')
-                    ->searchable(),
-                TextColumn::make('email_verified_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('role')
-                ->label('Acesso')
-                ->sortable()
-                    ->searchable()
-                    ->badge()
-                    ->color(function (string $state): string {
-                        return match ($state) {
-                            'ADMIN' => 'danger',
-                            'MEDICO' => 'info',
-                            'PACIENTE' => 'success',
-                        };
-                    }),
-                TextColumn::make('created_at')
-                ->label('Data de Criação')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                ->label('Data de Actualização')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -95,14 +68,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                ->label('Editar')
-                ->color('warning')
-                ->icon('heroicon-o-pencil'),
-                Tables\Actions\DeleteAction::make()
-                ->label('Eliminar')
-                ->color('danger')
-                ->icon('heroicon-o-trash'),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -126,5 +92,4 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
-
 }

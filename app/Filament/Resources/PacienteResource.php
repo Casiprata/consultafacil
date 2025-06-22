@@ -9,7 +9,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,30 +23,29 @@ class PacienteResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('data_nascimento')
-                    ->required(),
-                Forms\Components\TextInput::make('nacionalidade')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('provincia')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('municipio')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('morada')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\DatePicker::make('data_nascimento'),
+                Forms\Components\TextInput::make('sexo'),
+                Forms\Components\TextInput::make('bi')
+                    ->maxLength(255)
+                    ->default(null),
                 Forms\Components\TextInput::make('telefone')
                     ->tel()
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('endereco')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('profissao')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('estado_civil')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\DatePicker::make('data_cadastro')
+                    ->required(),
             ]);
     }
 
@@ -55,41 +53,30 @@ class PacienteResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('nome')
                     ->searchable(),
-                TextColumn::make('nome')
-                    ->label('Nome')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('data_nascimento')
+                Tables\Columns\TextColumn::make('data_nascimento')
                     ->date()
-                    ->sortable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sexo'),
+                Tables\Columns\TextColumn::make('bi')
                     ->searchable(),
-                TextColumn::make('nacionalidade')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('telefone')
                     ->searchable(),
-                TextColumn::make('provincia')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('municipio')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('morada')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('endereco')
                     ->searchable(),
-                TextColumn::make('telefone')
+                Tables\Columns\TextColumn::make('profissao')
                     ->searchable(),
-                TextColumn::make('created_at')
-                    ->label('Data de Registo')
+                Tables\Columns\TextColumn::make('estado_civil')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('data_cadastro')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('Última Atualização')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -98,15 +85,7 @@ class PacienteResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->label('Editar')
-                ->color('primary'),
-                Tables\Actions\DeleteAction::make()
-                    ->label('Eliminar')
-                ->color('danger'),
-                Tables\Actions\ViewAction::make()
-                    ->label('Ver')
-                    ->color('info'),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

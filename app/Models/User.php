@@ -26,9 +26,14 @@ class User extends Authenticatable
     ];
 
     protected $attributes = [
-        'role' => 'PACIENTE',
+        'role' => 'ENFERMEIRO',
     ];
-
+/*
+/**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+ */
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_MEDICO = 'MEDICO';
     const ROLE_PACIENTE = 'PACIENTE';
@@ -104,4 +109,5 @@ class User extends Authenticatable
     {
         return $this->hasOne(Medico::class, 'user_id');
     }
+ 
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConsultaResource\Pages;
-use App\Filament\Resources\ConsultaResource\RelationManagers;
-use App\Models\Consulta;
+use App\Filament\Resources\TratamentoResource\Pages;
+use App\Filament\Resources\TratamentoResource\RelationManagers;
+use App\Models\Tratamento;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ConsultaResource extends Resource
+class TratamentoResource extends Resource
 {
-    protected static ?string $model = Consulta::class;
+    protected static ?string $model = Tratamento::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
     public static function form(Form $form): Form
     {
@@ -26,15 +26,12 @@ class ConsultaResource extends Resource
                 Forms\Components\TextInput::make('paciente_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('data_consulta')
+                Forms\Components\TextInput::make('esquema_terapeutico')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('data_inicio')
                     ->required(),
-                Forms\Components\TextInput::make('peso')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('adesao')
-                    ->required(),
-                Forms\Components\Textarea::make('efeitos_adversos')
-                    ->columnSpanFull(),
+                Forms\Components\DatePicker::make('data_fim'),
                 Forms\Components\Textarea::make('observacoes')
                     ->columnSpanFull(),
             ]);
@@ -47,13 +44,14 @@ class ConsultaResource extends Resource
                 Tables\Columns\TextColumn::make('paciente_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('data_consulta')
+                Tables\Columns\TextColumn::make('esquema_terapeutico')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('data_inicio')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('peso')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('data_fim')
+                    ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('adesao'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -86,9 +84,9 @@ class ConsultaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListConsultas::route('/'),
-            'create' => Pages\CreateConsulta::route('/create'),
-            'edit' => Pages\EditConsulta::route('/{record}/edit'),
+            'index' => Pages\ListTratamentos::route('/'),
+            'create' => Pages\CreateTratamento::route('/create'),
+            'edit' => Pages\EditTratamento::route('/{record}/edit'),
         ];
     }
 }

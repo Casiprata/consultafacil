@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Consulta extends Model
+class Diagnostico extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'paciente_id',
-        'data_consulta',
-        'peso',
-        'adesao',
-        'efeitos_adversos',
+        'data_diagnostico',
+        'tipo_tb',
+        'sensibilidade',
+        'hiv_status',
+        'comorbidades',
         'observacoes',
     ];
 

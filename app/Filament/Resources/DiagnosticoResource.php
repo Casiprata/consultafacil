@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConsultaResource\Pages;
-use App\Filament\Resources\ConsultaResource\RelationManagers;
-use App\Models\Consulta;
+use App\Filament\Resources\DiagnosticoResource\Pages;
+use App\Filament\Resources\DiagnosticoResource\RelationManagers;
+use App\Models\Diagnostico;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ConsultaResource extends Resource
+class DiagnosticoResource extends Resource
 {
-    protected static ?string $model = Consulta::class;
+    protected static ?string $model = Diagnostico::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     public static function form(Form $form): Form
     {
@@ -26,15 +26,17 @@ class ConsultaResource extends Resource
                 Forms\Components\TextInput::make('paciente_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('data_consulta')
+                Forms\Components\DatePicker::make('data_diagnostico')
                     ->required(),
-                Forms\Components\TextInput::make('peso')
-                    ->numeric()
+                Forms\Components\TextInput::make('tipo_tb')
+                    ->required(),
+                Forms\Components\TextInput::make('sensibilidade')
+                    ->required(),
+                Forms\Components\TextInput::make('hiv_status')
+                    ->required(),
+                Forms\Components\TextInput::make('comorbidades')
+                    ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('adesao')
-                    ->required(),
-                Forms\Components\Textarea::make('efeitos_adversos')
-                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('observacoes')
                     ->columnSpanFull(),
             ]);
@@ -47,13 +49,14 @@ class ConsultaResource extends Resource
                 Tables\Columns\TextColumn::make('paciente_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('data_consulta')
+                Tables\Columns\TextColumn::make('data_diagnostico')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('peso')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('adesao'),
+                Tables\Columns\TextColumn::make('tipo_tb'),
+                Tables\Columns\TextColumn::make('sensibilidade'),
+                Tables\Columns\TextColumn::make('hiv_status'),
+                Tables\Columns\TextColumn::make('comorbidades')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -86,9 +89,9 @@ class ConsultaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListConsultas::route('/'),
-            'create' => Pages\CreateConsulta::route('/create'),
-            'edit' => Pages\EditConsulta::route('/{record}/edit'),
+            'index' => Pages\ListDiagnosticos::route('/'),
+            'create' => Pages\CreateDiagnostico::route('/create'),
+            'edit' => Pages\EditDiagnostico::route('/{record}/edit'),
         ];
     }
 }
